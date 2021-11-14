@@ -1,0 +1,16 @@
+---
+- hosts: webservers
+  tasks:
+
+    - name: Create a group for each domain
+      group:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ users }}"
+
+    - name: Create a user for each domain
+      user:
+        name: "{{ item }}"
+        state: present
+        group: "{{ item }}"
+      loop: "{{ users }}"

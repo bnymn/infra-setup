@@ -1,0 +1,21 @@
+all:
+  hosts:
+    server1:
+      ansible_host: 78.46.181.177
+      ansible_user: root
+  children:
+    webservers:
+      hosts:
+        server1:
+    prod:
+      hosts:
+        server1:
+  vars:
+    users:
+      - pazldev
+    applications:
+      - user: pazldev
+        host: www.pazl.dev
+        root_dir: www
+        port: 8000
+
