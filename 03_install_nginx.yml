@@ -1,7 +1,7 @@
 ---
 - hosts: all
   tasks:
-    - name: Ensure nginx is at the latest version
+    - name: Update apt cache and install nginx
       apt:
         name: nginx
         state: latest
@@ -10,3 +10,4 @@
       service:
           name: nginx
           state: started
+          enabled: yes
