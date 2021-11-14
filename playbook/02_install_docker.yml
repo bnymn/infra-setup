@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: webservers
   become: true
   tasks:
 
@@ -11,10 +11,6 @@
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
-    
-    - name: Register the release name
-      ansible.builtin.shell: lsb_release -cs
-      register: lsb_release
 
     - name: Add Docker Repository
       apt_repository:
