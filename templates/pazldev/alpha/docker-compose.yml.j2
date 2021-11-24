@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+    web:
+        image: ghcr.io/bnymn/web-alpha_pazl_dev:{{ parent_item.version }}
+        ports:
+            - "127.0.0.1:{{ parent_item.port }}:80"
+        restart: always
+        depends_on:
+            -   php
+    php:
+        image: ghcr.io/bnymn/php-alpha_pazl_dev:{{ parent_item.version }}
+        restart: always
