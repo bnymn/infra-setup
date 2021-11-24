@@ -1,0 +1,17 @@
+- name: Repository
+  import_playbook: playbook/01_remove_repositories.yml
+
+- name: Docker
+  import_playbook: playbook/02_install_docker.yml
+
+- name: Nginx
+  import_playbook: playbook/03_install_nginx.yml
+
+- name: User
+  import_playbook: playbook/04_create_users.yml
+
+- name: Application
+  import_playbook: playbook/05_create_applications.yml
+
+- name: Let's Encrypt
+  import_playbook: playbook/06_letsencrypt.yml

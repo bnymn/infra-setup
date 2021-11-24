@@ -16,7 +16,12 @@
     - name: Copy the default configuration
       copy:
         src: ../templates/nginx/default
-        dest: /etc/nginx/sites-available/default
+        dest: /etc/nginx/sites-enabled/default
+
+    - name: Copy options-ssl-nginx.conf
+      copy:
+        src: ../templates/nginx/options-ssl-nginx.conf
+        dest: /etc/nginx/options-ssl-nginx.conf
 
     - name: Restart nginx
       service:
