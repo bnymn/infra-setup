@@ -1,0 +1,35 @@
+all:
+  hosts:
+    server1:
+      ansible_host: 78.46.181.177
+      ansible_user: root
+  children:
+    webservers:
+      hosts:
+        server1:
+    prod:
+      hosts:
+        server1:
+  vars:
+    acme_challenge_type: http-01
+    acme_directory: https://acme-v02.api.letsencrypt.org/directory
+    acme_version: 2
+    letsencrypt_dir: /etc/letsencrypt
+    letsencrypt_keys_dir: /etc/letsencrypt/keys
+    letsencrypt_csrs_dir: /etc/letsencrypt/csrs
+    letsencrypt_certs_dir: /etc/letsencrypt/certs
+    letsencrypt_account_key: /etc/letsencrypt/account/account.key
+    acme_email: inanbunyamin90@gmail.com
+
+    users:
+      - username: pazldev
+        authorized_keys:
+          - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAQDVoxwXR+1T0f8Vv/VLAH/8o3rGWBhWQI+daP9TRq0N1ZA9HnQ4VlifO8lw0SGWchHeLAvz+7IN6ez9uJ/4AXx2AZHePPFQS5uDSnISFWeWgwCTw9txzDG/Kks8vjisJN77bJRgOFjMrl3gfJpgOXTp1e/QoZjVX7k7QkVteuXQjwx87Qmaudp+wxoNYs2p2Hn+Gf5mbrVVukkO8CHSGOowGHeoHRlt4Lf0yysasXm9XmcF0jSs+EndJjEtQJ3OSKH/87v2BrZgY0h5lJjT7i5WM0y7U7V660PUsaYqNzXA5iemvFld2AUrFU6mdl8wst/Esh2o4tRqxikD+8hyEGgm4hdOpk0RK6dUsh64gbvumLH/nTyeA3ffTAIO7LaRHT530U4wg3g22Re6M4wzDEOGKh07zb4zAFbzq8ZibpQsXJ7q6tgFatFoV9P4ufs0/IPfDQ+MLq9R4CFHs8UhabVTAsrEGYYt6m5QXNxUJ35jcwjk7PZSb0GNcYoGcJ2lPnq05FGIE5jEngLv8pRcAzlVDez94azx2o4W/w8HbOAUIIaJyXOl/m1AqbBmCXcKPGmpKiXFmFC0J2i/2jM6eNPYMzLbE5YbNaP1GXXfeDM4U/agoY4htZOuTD/vHk8JLnprUvJi5d2jdvjCBph0XUNTRztHOuZ3hKBeRd7d5h3F3QIowWgCWX9+cDPyfGyvQXVnxNZXnyWpHPlx14zjJ0OpH8bz3arEi0VXMVk4plnmfGVs9QuQQ2+Eb42+I33Ei7P1by4Hk6EFG/4ufUb7TIkcFmdc296KFYYUi7eJxP+QKOtk74g3n58AMQMbmpVQQqXOxsd1epPfjw5wJYzWQ5n8MnWJPchzwtYw6aH/GftpGb7psWrMckGbQqSO+O97tyJ28C4dIk2i9mptatl4yyPKyrjxMeeeGjPoomkzoahF6fC+4yje2aaKuvg8VSklve+zgcZqS0hfZEHBq7Lvf/I39GTlfQdwkcFOmEiw/eM3Rg0+kYXTlNFMmWPv1MiNmjPstE0X2kn4YhNz2COy+QHeTYUtKPn3HHdYWtj1+7yYOAqO8BZQTizbXGluJvKD00c/0glzMLjS3D1BFt3d70y0imSc1YcBpvYdhulOS52Nz9Y1fRZHky6gdRcijpKrT5Dzt0xazf/lV462wshBWsa23S0CYhS41cC4U9r+RyZ4atKkhQSsGnrHIHXSt106iSiqJzCSQXQmynMSSt7DRl/O6/VIUgHGgPec2XB7khblXQRqmsnG6nPgGEg2DegP8mISFif1d8KlmnUvj0PabM/JzV59/MgsXhH+OwcXZzj6n3u+QikTBieGXDb7HivVdNykJdqNHEmdBqxSXBW49kUx origin@github
+
+    applications:
+      - username: pazldev
+        host: www.pazl.dev
+        root_dir: www
+        port: 8000
+        version: 849839956c598f1bfd4ed81e7f1729c34e765319
+
