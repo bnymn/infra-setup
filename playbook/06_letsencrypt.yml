@@ -35,3 +35,11 @@
       loop: "{{ applications }}"
       loop_control:
         loop_var: parent_item
+
+    - name: Create nginx template
+      include_tasks: create_nginx_template.yml
+
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted
