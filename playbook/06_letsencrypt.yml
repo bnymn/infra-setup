@@ -1,0 +1,37 @@
+---
+- hosts: "webservers"
+  tasks:
+    - name: "Create required directories in /etc/letsencrypt"
+      file:
+        path: "/etc/letsencrypt/{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: u=rwx,g=x,o=x
+      with_items:
+        - account
+        - certs
+        - csrs
+        - keys
+
+    - name: Generate an OpenSSL private key for the account
+      community.crypto.openssl_privatekey:
+        path: "{{ letsencrypt_account_key }}"
+        type: RSA
+        size: 4096
+
+    - name: Make sure account exists and has given contacts. We agree to TOS.
+      community.crypto.acme_account:
+        acme_version: "{{ acme_version }}"
+        acme_directory: "{{ acme_directory }}"
+        account_key_src: "{{ letsencrypt_account_key }}"
+        state: present
+        terms_agreed: yes
+        contact:
+            - mailto:inanbunyamin90@gmail.com
+
+    - name: Configure SSL for each application
+      include_tasks: 06_letsencrypt/01_install.yml
+      loop: "{{ applications }}"
+      loop_control:
+        loop_var: parent_item

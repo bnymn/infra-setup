@@ -1,21 +1,23 @@
 ---
 - hosts: webservers
   tasks:
+
     - name: Update apt cache and install nginx
       apt:
         name: nginx
         state: latest
         update_cache: yes
+
     - name: Enable nginx
       service:
-          name: nginx
-          enabled: yes
-    - name: Apply nginx template
-      template:
-        src: ../templates/nginx/nginx.conf.j2
+        name: nginx
+        enabled: yes
+
+    - name: Copy the default configuration
+      copy:
+        src: ../templates/nginx/default
         dest: /etc/nginx/sites-available/default
-      notify: Restart nginx
-  handlers:
+
     - name: Restart nginx
       service:
         name: nginx

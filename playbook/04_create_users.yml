@@ -1,49 +1,8 @@
 ---
 - hosts: webservers
   tasks:
-
-    - name: Create a group for each domain
-      group:
-        name: "{{ item.username }}"
-        state: present
+    - name: Install user
+      include_tasks: 04_create_users/01_install.yml
       loop: "{{ users }}"
-
-    - name: Create a user for each domain
-      user:
-        name: "{{ item.username }}"
-        state: present
-        group: "{{ item.username }}"
-      loop: "{{ users }}"
-
-    - name: Create .ssh folder
-      file:
-        path: "/home/{{ item.username }}/.ssh"
-        state: directory
-        owner: "{{ item.username }}"
-        group: "{{ item.username }}"
-        mode: "0755"
-      loop: "{{ users }}"
-
-    - name: Create authorized_keys
-      file:
-        path: "/home/{{ item.username }}/.ssh/authorized_keys"
-        state: touch
-        owner: "{{ item.username }}"
-        group: "{{ item.username }}"
-        mode: "0600"
-      loop: "{{ users }}"
-
-    - name: Create authorized_keys file
-      file:
-        path: "/home/{{ item.username }}/.ssh/authorized_keys"
-        state: touch
-        owner: "{{ item.username }}"
-        group: "{{ item.username }}"
-        mode: "0600"
-      loop: "{{ users }}"
-
-    - name: Copy authorized_keys
-      copy:
-        content: "{{ item.authorized_keys | join('\n') }}"
-        dest: "/home/{{ item.username }}/.ssh/authorized_keys"
-      loop: "{{ users }}"
+      loop_control:
+        loop_var: parent_item
