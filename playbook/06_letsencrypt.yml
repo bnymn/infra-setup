@@ -37,7 +37,10 @@
         loop_var: parent_item
 
     - name: Create nginx template
-      include_tasks: create_nginx_template.yml
+      include_tasks: 05_create_applications/create_nginx_template.yml
+      loop: "{{ applications }}"
+      loop_control:
+        loop_var: parent_item
 
     - name: Restart nginx
       service:

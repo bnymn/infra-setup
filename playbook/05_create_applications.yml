@@ -5,7 +5,7 @@
       docker_login:
         registry: ghcr.io
         username: bnymn
-        password: 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
+        password: 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
         reauthorize: yes
 
     - name: Install applications
