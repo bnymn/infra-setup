@@ -11,7 +11,9 @@ Please run the following command to apply ansible playbooks:
 ansible-playbook install.yml -i inventory.yml
 ```
 
-How to generate personal access token for GitHub?
-Please visit this page, https://github.com/settings/tokens
+# How to generate personal access token for GitHub?
+Please visit the following page to generate an access token: https://github.com/settings/tokens.
+After generating the token, please put it into `projects/web-ansible/playbook/05_create_applications.yml`
+file.
 
 # How to deploy a new version of an existing application?
