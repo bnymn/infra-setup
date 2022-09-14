@@ -1,0 +1,21 @@
+- name: Check if CRT file exists
+  stat:
+    path: /etc/letsencrypt/certs/{{ parent_item.host }}-fullchain.crt
+  register: crt_result
+
+- name: Check if KEY file exists
+  stat:
+    path: /etc/letsencrypt/keys/{{ parent_item.host }}.key
+  register: key_result
+
+- name: Create nginx template without SSL
+  template:
+    src: ../../templates/nginx/nginx.conf.j2
+    dest: /etc/nginx/sites-enabled/{{ parent_item.host }}.conf
+  when: not crt_result.stat.exists or not key_result.stat.exists
+
+- name: Create nginx template with SSL
+  template:
+    src: ../../templates/nginx/nginx_with_ssl.conf.j2
+    dest: /etc/nginx/sites-enabled/{{ parent_item.host }}.conf
+  when: crt_result.stat.exists and key_result.stat.exists
