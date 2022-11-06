@@ -45,5 +45,5 @@ all:
         host: kasaposman-de.pazl.dev
         root_dir: kasaposman-de
         port: 8002
-        version: 253b5568f5d8fc94463e34ff23df8f6407636daa
+        version: c730f1d2b57158a634f69d33ba5e4688733988ff
 
