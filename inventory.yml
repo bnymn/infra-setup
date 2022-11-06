@@ -41,3 +41,9 @@ all:
         port: 8001
         version: 188dbc1ba6c628119cd5f2541f12e04e41e94c79
 
+      - username: pazldev
+        host: kasaposman-de.pazl.dev
+        root_dir: kasaposman-de
+        port: 8002
+        version: 253b5568f5d8fc94463e34ff23df8f6407636daa
+
