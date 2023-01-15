@@ -1,16 +1,16 @@
 all:
   hosts:
-    server1:
+    pazldev-web:
       ansible_host: 78.46.181.177
       ansible_user: root
       ansible_port: 63204
   children:
     webservers:
       hosts:
-        server1:
+        pazldev-web:
     prod:
       hosts:
-        server1:
+        pazldev-web:
   vars:
     acme_challenge_type: http-01
     acme_directory: https://acme-v02.api.letsencrypt.org/directory

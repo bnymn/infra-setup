@@ -2,7 +2,13 @@
 1. Install ansible
    - Please use this link to install ansible: https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installation-guide
 
-# How to apply ansible playbooks?
+# Playbooks
+
+## 01. Remove Repositories
+universe, multiverse and backports repositories are not needed for our installation. For this reason,
+we are going to remove these repositories from apt sources.
+
+## How to apply ansible playbooks?
 - `install.yml` is the main file which includes all the configurations
 - `inventory.yml` is the inventory configuration file
 
