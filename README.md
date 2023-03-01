@@ -36,8 +36,10 @@ ansible-playbook playbook/nginx.yaml -i inventory.yml
   vars:
     nginx_sites:
       - server_name: pazl.dev
-        proxy: http://127.0.0.1:8000
         admin_email: dev@pazl.dev
+        apps:
+          - location: /password
+            proxy: http://127.0.0.1:8000
 ```
 - Then modify it according to your needs.
 
