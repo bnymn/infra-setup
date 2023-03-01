@@ -1,0 +1,21 @@
+---
+- name: Change SSH port on Ubuntu
+  hosts: all
+  become: true
+
+  vars:
+    ssh_port: 63204
+
+  tasks:
+    - name: Update SSH port in SSH daemon configuration
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?Port'
+        line: "Port {{ ssh_port }}"
+        state: present
+        backup: true
+
+    - name: Reload SSH daemon
+      service:
+        name: sshd
+        state: reloaded

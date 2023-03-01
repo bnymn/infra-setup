@@ -1,0 +1,9 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name {{ nginx_site.server_name }};
+    
+    {% with apps = nginx_site.apps %}
+        {% include 'nginx_site/apps.j2' %}
+    {% endwith %}
+}

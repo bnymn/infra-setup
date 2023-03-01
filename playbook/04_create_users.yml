@@ -1,8 +1,0 @@
----
-- hosts: webservers
-  tasks:
-    - name: Install user
-      include_tasks: 04_create_users/01_install.yml
-      loop: "{{ users }}"
-      loop_control:
-        loop_var: parent_item

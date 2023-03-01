@@ -4,9 +4,42 @@
 
 # Playbooks
 
-## 01. Remove Repositories
-universe, multiverse and backports repositories are not needed for our installation. For this reason,
+## Change SSH Port
+We should not use the default SSH port. Please change it to something else.
+```
+ansible-playbook playbook/change_ssh_port.yaml -i root@<server-ip-or-hostname>,
+```
+
+## Remove Repositories
+Backport repository is not needed for our installation. For this reason,
 we are going to remove these repositories from apt sources.
+```
+ansible-playbook playbook/remove_repositories.yaml -i inventory.yml
+```
+
+## Install Docker
+In order to run our applications, we need to have a docker installed in out system.
+```
+ansible-playbook playbook/install_docker.yaml -i inventory.yml
+```
+
+## Install Nginx and configure SSL certificates with Certbot
+In order to serve our applications to visitors, we are using nginx as a web server.
+```
+ansible-playbook playbook/nginx.yaml -i inventory.yml
+```
+
+### How can I add a new domain?
+- Open `playbook/nginx.yaml` file in your editor.
+- Find the variables in the find, it should look like this:
+```
+  vars:
+    nginx_sites:
+      - server_name: pazl.dev
+        proxy: http://127.0.0.1:8000
+        admin_email: dev@pazl.dev
+```
+- Then modify it according to your needs.
 
 ## How to apply ansible playbooks?
 - `install.yml` is the main file which includes all the configurations

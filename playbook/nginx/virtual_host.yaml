@@ -1,0 +1,33 @@
+- name: Create Nginx virtual host configuration files without SSL
+  template:
+    src: ../templates/nginx_site_without_ssl.j2
+    dest: /etc/nginx/sites-available/{{ nginx_site.server_name }}
+    mode: 0644
+
+- name: Enable Nginx virtual hosts
+  file:
+    src: "/etc/nginx/sites-available/{{ nginx_site.server_name }}"
+    dest: "/etc/nginx/sites-enabled/{{ nginx_site.server_name }}"
+    state: link
+
+- name: Check if certificate file exists
+  stat:
+    path: /etc/letsencrypt/live/{{ nginx_site.server_name }}/fullchain.pem
+  register: cert_fullchain
+
+- name: Check if certificate file exists
+  stat:
+    path: /etc/letsencrypt/live/{{ nginx_site.server_name }}/fullchain.pem
+  register: cert_key
+
+- name: Obtain SSL certificates with Certbot
+  command: "certbot --nginx -n --agree-tos --email {{ nginx_site.admin_email }} -d {{ nginx_site.server_name }} --redirect"
+  when: not cert_fullchain.stat.exists or not cert_key.stat.exists
+  register: certbot_result
+  changed_when: certbot_result.stdout.find('Congratulations! Your certificate and chain have been saved at') != -1
+
+- name: Create Nginx virtual host configuration files with SSL
+  template:
+    src: templates/nginx_site.j2
+    dest: /etc/nginx/sites-available/{{ nginx_site.server_name }}
+    mode: 0644
