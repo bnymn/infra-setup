@@ -1,0 +1,19 @@
+---
+- name: Create an app user and add to Docker group
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Create group
+      group:
+        name: app
+        state: present
+
+    - name: Create user
+      user:
+        name: app
+        group: app
+        groups: docker
+        shell: /bin/bash
+        state: present
+        append: true

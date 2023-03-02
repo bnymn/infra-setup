@@ -29,6 +29,13 @@ In order to serve our applications to visitors, we are using nginx as a web serv
 ansible-playbook playbook/nginx.yaml -i inventory.yml
 ```
 
+## Create an app user and add to Docker group
+Our docker containers do not run as a root, they run under the user `app`. This
+user is added to the `docker` group.
+```
+ansible-playbook playbook/create_user.yaml -i inventory.yml
+```
+
 ### How can I add a new domain?
 - Open `playbook/nginx.yaml` file in your editor.
 - Find the variables in the find, it should look like this:
