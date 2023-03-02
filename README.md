@@ -50,18 +50,3 @@ ansible-playbook playbook/create_user.yaml -i inventory.yml
 ```
 - Then modify it according to your needs.
 
-## How to apply ansible playbooks?
-- `install.yml` is the main file which includes all the configurations
-- `inventory.yml` is the inventory configuration file
-
-Please run the following command to apply ansible playbooks:
-```shell
-ansible-playbook install.yml -i inventory.yml
-```
-
-# How to generate personal access token for GitHub?
-Please visit the following page to generate an access token: https://github.com/settings/tokens.
-After generating the token, please put it into `projects/web-ansible/playbook/05_create_applications.yml`
-file.
-
-# How to deploy a new version of an existing application?
