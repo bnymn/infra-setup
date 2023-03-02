@@ -8,7 +8,7 @@
       - server_name: pazl.dev
         admin_email: dev@pazl.dev
         apps:
-          - location: /password
+          - name: password
             proxy: http://127.0.0.1:8000
 
   tasks:
