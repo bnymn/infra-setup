@@ -10,6 +10,8 @@
         apps:
           - name: password
             proxy: http://127.0.0.1:8000
+          - name: prayer
+            proxy: http://127.0.0.1:8002
 
   tasks:
     - name: Install Nginx
