@@ -10,7 +10,7 @@ We should not use the default SSH port. Please change it to something else.
 ansible-playbook playbook/change_ssh_port.yaml -i root@<server-ip-or-hostname>,
 ```
 
-## Remove Repositories
+## Remove Backport Repositories
 Backport repository is not needed for our installation. For this reason,
 we are going to remove these repositories from apt sources.
 ```
