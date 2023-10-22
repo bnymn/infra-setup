@@ -10,9 +10,9 @@
         apps:
           - location: /password
             proxy: http://127.0.0.1:8000
-          - name: /prayer
+          - location: /prayer
             proxy: http://127.0.0.1:8002
-          - name: /
+          - location: /
             proxy: http://127.0.0.1:8004
 
   tasks:

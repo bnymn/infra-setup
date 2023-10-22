@@ -1,5 +1,5 @@
 {% for app in apps %}
-location /{{ app.name }}/ {
+location {{ app.location }} {
     proxy_pass {{ app.proxy }};
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
