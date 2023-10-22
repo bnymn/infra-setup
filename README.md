@@ -49,4 +49,7 @@ ansible-playbook playbook/create_user.yaml -i inventory.yml
             proxy: http://127.0.0.1:8000
 ```
 - Then modify it according to your needs.
-
+- After your modifications, you can run the following command in order to apply them.
+```
+ansible-playbook playbook/nginx.yaml -i inventory.yml
+```

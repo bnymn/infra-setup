@@ -8,10 +8,12 @@
       - server_name: pazl.dev
         admin_email: dev@pazl.dev
         apps:
-          - name: password
+          - location: /password
             proxy: http://127.0.0.1:8000
-          - name: prayer
+          - name: /prayer
             proxy: http://127.0.0.1:8002
+          - name: /
+            proxy: http://127.0.0.1:8004
 
   tasks:
     - name: Install Nginx
