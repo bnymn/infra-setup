@@ -36,7 +36,7 @@ user is added to the `docker` group.
 ansible-playbook playbook/create_user.yaml -i inventory.yml
 ```
 
-### How can I add a new domain?
+## How can I add a new domain?
 - Open `playbook/nginx.yaml` file in your editor.
 - Find the variables in the find, it should look like this:
 ```
@@ -52,4 +52,11 @@ ansible-playbook playbook/create_user.yaml -i inventory.yml
 - After your modifications, you can run the following command in order to apply them.
 ```
 ansible-playbook playbook/nginx.yaml -i inventory.yml
+```
+
+## How can I install MySQL service in Docker?
+- Open `playbook/mysql_docker_playbook.yaml` file in your editor.
+- Adjust the mysql version according to your needs.
+```
+ansible-playbook playbook/mysql_docker_playbook.yaml -i inventory.yml
 ```
