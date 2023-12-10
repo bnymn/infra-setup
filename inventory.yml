@@ -4,3 +4,4 @@ all:
       ansible_host: 78.46.181.177
       ansible_user: root
       ansible_port: 63204
+

@@ -15,6 +15,14 @@
         state: present
         backup: true
 
+    - name: Enable UsePAM
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?UsePAM'
+        line: "UsePAM yes"
+        state: present
+        backup: true
+
     - name: Reload SSH daemon
       service:
         name: sshd

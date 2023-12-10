@@ -1,0 +1,36 @@
+---
+- name: Setup My Rust Application as a Service
+  hosts: all
+  become: yes
+  vars:
+    app_path: /home/app/www
+    app_user: app
+    app_group: app
+    app_env_vars: "RUST_LOG=info"
+    app_working_dir: /home/app
+    service_file_path: /etc/systemd/system/app_www.service
+
+  tasks:
+    - name: Copy systemd service file for My Rust Application
+      template:
+        src: templates/app.service.j2
+        dest: "{{ service_file_path }}"
+      notify:
+        - reload systemd
+        - restart myapp
+
+    - name: Enable and start service
+      systemd:
+        name: app_www
+        enabled: yes
+        state: started
+
+  handlers:
+    - name: reload systemd
+      systemd:
+        daemon_reload: yes
+
+    - name: restart app_www
+      systemd:
+        name: app_www
+        state: restarted
