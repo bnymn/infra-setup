@@ -15,10 +15,10 @@
         enabled: true
 
     - name: Adding {{ username }} group to www-data
-      user: name={{ www-data }}
-            group={{ username }}
-            shell=/bin/bash
-            append=yes
+      user:
+        name: www-data
+        groups: "{{ username }}"
+        append: yes
 
     - name: Install Certbot
       apt:

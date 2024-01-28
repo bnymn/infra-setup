@@ -26,7 +26,7 @@ ansible-playbook playbook/install_docker.yaml -i inventory.yml
 ## Install Nginx and configure SSL certificates with Certbot
 In order to serve our applications to visitors, we are using nginx as a web server.
 ```
-ansible-playbook playbook/nginx.yaml -i inventory.yml
+ansible-playbook playbook/100-nginx.yaml -i inventory.yml
 ```
 
 ## Create an app user and add to Docker group
