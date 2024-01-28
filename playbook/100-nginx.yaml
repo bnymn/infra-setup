@@ -3,18 +3,6 @@
   hosts: all
   become: true
 
-  vars:
-    nginx_sites:
-#      - server_name: pazl.dev
-#        admin_email: dev@pazl.dev
-#        apps:
-#          - location: /
-#            proxy: http://127.0.0.1:8000
-      - server_name: bunyamininan.com
-        admin_email: mail@bunyamininan.com
-        apps:
-          - location: /
-            proxy: http://127.0.0.1:8000
   tasks:
     - name: Install Nginx
       apt:
@@ -25,6 +13,12 @@
       systemd:
         name: nginx
         enabled: true
+
+    - name: Adding {{ username }} group to www-data
+      user: name={{ www-data }}
+            group={{ username }}
+            shell=/bin/bash
+            append=yes
 
     - name: Install Certbot
       apt:
