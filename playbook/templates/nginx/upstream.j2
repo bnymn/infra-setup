@@ -1,0 +1,5 @@
+upstream app {
+{% for application_server in application_servers %}
+    server {{ application_server }}:9000;
+{% endfor %}
+}

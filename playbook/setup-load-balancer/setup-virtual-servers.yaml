@@ -39,20 +39,14 @@
   register: certbot_result
   changed_when: certbot_result.stdout.find('Successfully received certificate.') != -1
 
-#
-#- name: Obtain SSL certificates with Certbot
-#  command: >
-#    certbot --nginx -n --agree-tos --email {{ nginx_site.admin_email }}
-#    {% for server_name in nginx_site.server_names %}
-#    -d {{ server_name }}
-#    {% endfor %}
-#    --redirect
-#  when: not cert_fullchain.stat.exists or not cert_key.stat.exists
-#  register: certbot_result
-#  changed_when: certbot_result.stdout.find('Congratulations! Your certificate and chain have been saved at') != -1
-#
-#- name: Create Nginx virtual host configuration files with SSL
-#  template:
-#    src: templates/nginx_site.j2
-#    dest: /etc/nginx/sites-available/{{ nginx_site.server_names[0] }}
-#    mode: 0644
+- name: Generate the upstream configuration
+  template:
+    src: templates/nginx/upstream.j2
+    dest: /etc/nginx/sites-enabled/upstream.conf
+    mode: 0644
+
+- name: Generate https server configurations
+  template:
+    src: templates/nginx/https.j2
+    dest: /etc/nginx/sites-enabled/{{ application.main_domain }}_https.conf
+    mode: 0644
