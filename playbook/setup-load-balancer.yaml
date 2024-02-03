@@ -30,6 +30,16 @@
         user: root
         state: present
 
+    - name: Remove default server configuration
+      file:
+        path: /etc/nginx/sites-available/default
+        state: absent
+
+    - name: Remove default server configuration
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
     - name: Setup virtual servers
       include_tasks: setup-load-balancer/setup-virtual-servers.yaml
       loop: "{{ applications }}"

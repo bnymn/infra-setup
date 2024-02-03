@@ -16,7 +16,7 @@
 - name: Generate default site configuration without SSL
   template:
     src: templates/nginx/http.j2
-    dest: /etc/nginx/sites-available/{{ application.main_domain }}_http.conf
+    dest: /etc/nginx/sites-enabled/{{ application.main_domain }}_http.conf
     mode: 0644
 #
 #
