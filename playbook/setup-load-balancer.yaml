@@ -30,6 +30,12 @@
         user: root
         state: present
 
+    - name: Generate default site configuration without SSL
+      template:
+        src: ../templates/default_without_ssl.j2
+        dest: /etc/nginx/sites-available/default
+        mode: 0644
+
     - name: Reload Nginx
       service:
         name: nginx
