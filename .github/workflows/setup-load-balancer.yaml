@@ -19,6 +19,7 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.VM_SSH_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.NEWS_LB_HOST }}
+      - uses: actions/checkout@v4
       - name: Run ansible
         run: |
           service ssh status
