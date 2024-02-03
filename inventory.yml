@@ -1,17 +1,22 @@
-all:
+lb:
   hosts:
-    pazldev-web:
-      ansible_host: 78.46.181.177
-      ansible_user: root
+    5.75.210.124:
+      ansible_user: izzet
       ansible_port: 63204
-  vars:
-    username: app
-    authorized_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAQCphXPfWwdneWALBz5Z4BTOQOcF7eIO4qdIDdjA21Z0nMiFlUg5t2V7qy8vKLxeoSSAx/e+cUflgMc77d0+8HFU6L5jF97cise0uEX/TN4JV4ouiolRniYUaC4TmU4VA5FVlQWcYCRnnsuECG/uppHt8s5emCBRhxvfy9zTQUqBrj27QUh/3YtVvaTKebSz//3PNrao0q7RwN4vRK85Rj3d56Ggt0ZGpFPLOuInMBSrFd6UHsj4k3ymaxiuwOK2NZ7RiuMJsC0RiaIhR6jtT+oM0AUpfUj9q6Y+HYH+Mhuz7/vXbVqS/qLm0/Dsc94Obu43KunV2TH3Uebyosl7qiaRBeIhUnImwl7J0GhJvF4jSH1AWx4JW/zWRatypxSyttdgf1tMR1WadBGymglWqdKQ8Ojvcd2mLpjV6Trr6OMtWE36C5CXUb1zbV9WQ7sA2LPV3wGXojG/SWT1s5kshwKucaUCtgu9t2CG80tIwDMj23fGlI4f9dJDYZfJISwXELdo8W6V3Hayj9mr/ByChW1AFoWWWnOHoLNF5+OSRBzLCbyZfCJSzbiSysFMOrU6ZlBsx8lDsffWIPdH3hplxzrYF5IzuCSBqAI06nfCZ0AZW1pBEx6wMMebI/7/qJM5o3Wi87LQm2aJjgls4GT1cZ7/mQ+L8vLmQ/+4QwZ2RLa7pBWCqfmu6JnjlgO05tqrSDMmUSlJwW3dX3O1rXM9wfBhRCSoazyCt/qGC+JBQAV9ohpNMLZsgPewDj+G/TeeyDQIPEFgt5geoj5XgjY+s5lU5MiTzfn0o8OQheTX6I0c3rvXcGyzdJTkg2ELTDiE+5sV5yalL67OeapNoQLb9zxq+yIor8Qz19nVCMbPkP1tz9efiV1+CLdmxrRFi7xZX+wAS9YnIMLbJiHf67ptmsDCG8yQPikHYaGV9Xe5ibRV6zbTGmZDCF2B6Q0nZmv2EZkDboHIojATtedetoX1O7WBzVtf0Bp/hqaSVHDVZoLOQytlGjFHAjc9L2YZ+v2kv6KNr17dvtk6EblzffgIgNSUbnTo6/Sukn2h/PkQCIn4fVK8ut0pZqZK9Sd3y7YtIZFnOwf4mxt6tajcbjDL3OhtlSBxmsho+Cq6v1Gnu20HQocryVugcEwk7w9t/7KaS7LoccSsFT8D18n28ZQ56c9A+xmuKmgVKMQOGaFW2soWze2M71QjR4Mx4oH/B+dTDoP5Yb+EH5OlPBTRS87QtmlsyE7HA3PlSUJc6puw6u9lLHxBVMMWkhcnVgcY13ZABYx/O5ZIYCfyiy9ooLQhKcK2l8cH4e/CmRtABPPiYisrp0mf1mwX+faIbqcR40zb17ANR2Z+PXQA8ITZFXrBXwBf dev+app@pazl.dev
-    nginx_sites:
-      -
-        server_names:
-          - bunyamininan.com
-          - www.bunyamininan.com
-        admin_email: mail@bunyamininan.com
-        proxy: http://127.0.0.1:8000
+      domains:
+        - bunyamininan.com
+        - www.bunyamininan.com
+      application_servers:
+        - 10.0.0.3
+
+news:
+  hosts:
+    10.0.0.3:
+      ansible_user: izzet
+      ansible_port: 63204
+
+database:
+  hosts:
+
+monitoring:
+  hosts:

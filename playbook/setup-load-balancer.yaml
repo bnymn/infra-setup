@@ -1,0 +1,36 @@
+---
+- name: Install Nginx and configure SSL certificates with Certbot
+  hosts: lb
+  become: true
+
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Enable Nginx service
+      systemd:
+        name: nginx
+        enabled: true
+
+    - name: Install Certbot
+      apt:
+        name:
+          - certbot
+          - python3-certbot-nginx
+        state: present
+
+    - name: Schedule automatic renewal of SSL certificates with Certbot
+      cron:
+        name: "Renew Certbot SSL certificates"
+        minute: "0"
+        hour: "12"
+        job: "certbot renew --quiet"
+        user: root
+        state: present
+
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: reloaded
