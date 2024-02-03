@@ -1,0 +1,25 @@
+name: Setup Load Balancer
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Setup
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Configuring ssh
+        run: |
+          eval `ssh-agent -s`
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/id_key
+          chmod 600 ~/.ssh/id_key
+          ssh-keyscan -t rsa,dsa,ecdsa,ed25519 $SSH_HOST >> ~/.ssh/known_hosts
+        env:
+          SSH_KEY: ${{ secrets.VM_SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.NEWS_LB_HOST }}
+      - name: Run ansible
+        run: |
+          service ssh status
+          ansible-playbook -vvv -i inventory.yml --private-key ~/.ssh/id_rsa playbook/setup-load-balancer.yaml
