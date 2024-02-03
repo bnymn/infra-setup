@@ -13,13 +13,6 @@ server {
         root /var/www/html/{{ domain }};
         try_files /.well-known/acme-challenge =404;
     }
-}
-{% endfor %}
-
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name {{ domains | join(' ') }};
     location / {
         proxy_pass http://app;
         proxy_set_header Host $host;
@@ -28,3 +21,4 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
+{% endfor %}
