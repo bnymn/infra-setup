@@ -30,6 +30,15 @@
         user: root
         state: present
 
+    - name: Create webroot directories
+      file:
+        path: /var/www/html/{{ domain }}
+        state: directory
+        mode: '0755'
+      loop: "{{ domains }}"
+      loop_control:
+        loop_var: domain
+
     - name: Generate default site configuration without SSL
       template:
         src: templates/default_without_ssl.j2
