@@ -27,4 +27,4 @@ jobs:
       - name: Run ansible
         run: |
           service ssh status
-          ansible-playbook -vvv -i inventory.yml --private-key ~/.ssh/id_rsa playbook/setup-load-balancer.yaml
+          ansible-playbook -i inventory.yml --private-key ~/.ssh/id_rsa playbook/setup-load-balancer.yaml
