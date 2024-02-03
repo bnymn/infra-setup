@@ -1,5 +1,5 @@
 ---
-- name: Install Nginx and configure SSL certificates with Certbot
+- name: Setup load balancer
   hosts: lb
   become: true
 
