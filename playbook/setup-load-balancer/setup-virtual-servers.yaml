@@ -13,34 +13,32 @@
   loop_control:
     loop_var: domain
 
-- name: Generate default site configuration without SSL
+- name: Generate http server configurations
   template:
     src: templates/nginx/http.j2
     dest: /etc/nginx/sites-enabled/{{ application.main_domain }}_http.conf
     mode: 0644
-#
-#
-#- name: Create Nginx virtual host configuration files without SSL
-#  template:
-#    src: ../templates/nginx_site_without_ssl.j2
-#    dest: /etc/nginx/sites-available/{{ nginx_site.server_names[0] }}
-#    mode: 0644
-#
-#- name: Enable Nginx virtual hosts
-#  file:
-#    src: "/etc/nginx/sites-available/{{ nginx_site.server_names[0] }}"
-#    dest: "/etc/nginx/sites-enabled/{{ nginx_site.server_names[0] }}"
-#    state: link
-#
-#- name: Check if certificate file exists
-#  stat:
-#    path: /etc/letsencrypt/live/{{ nginx_site.server_names[0] }}/fullchain.pem
-#  register: cert_fullchain
-#
-#- name: Check if certificate file exists
-#  stat:
-#    path: /etc/letsencrypt/live/{{ nginx_site.server_names[0] }}/fullchain.pem
-#  register: cert_key
+
+- name: Check if certificate file exists
+  stat:
+    path: /etc/letsencrypt/live/{{ application.main_domain }}/fullchain.pem
+  register: cert_fullchain
+
+- name: Check if certificate file exists
+  stat:
+    path: /etc/letsencrypt/live/{{ application.main_domain }}/fullchain.pem
+  register: cert_key
+
+- name: Obtain SSL certificates with Certbot
+  command: >
+    certbot certonly -n --agree-tos --email {{ nginx_site.admin_email }} --webroot -w /var/www/html/{{ application.main_domain }} -d {{ application.main_domain }}
+    {% for domain in application.other_domains %}
+    -w /var/www/html/{{ domain }} -d {{ domain }}
+    {% endfor %}
+  when: not cert_fullchain.stat.exists or not cert_key.stat.exists
+  register: certbot_result
+  changed_when: certbot_result.stdout.find('Successfully received certificate.') != -1
+
 #
 #- name: Obtain SSL certificates with Certbot
 #  command: >

@@ -7,9 +7,9 @@ lb:
         - main_domain: bunyamininan.com
           other_domains:
             - www.bunyamininan.com
-        - main_domain: hostnicnet.com
+        - main_domain: www.hostnicnet.com
           other_domains:
-            - www.hostnicnet.com
+            - hostnicnet.com
       application_servers:
         - 10.0.0.3
 
