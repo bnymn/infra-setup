@@ -1,0 +1,60 @@
+- name: Create the webroot of the main domain
+  file:
+    path: /var/www/html/{{ application.main_domain }}/.well-known/acme-challenge
+    state: directory
+    mode: '0755'
+
+- name: Create the webroot of other domains
+  file:
+    path: /var/www/html/{{ domain }}/.well-known/acme-challenge
+    state: directory
+    mode: '0755'
+  loop: "{{ application.other_domains }}"
+  loop_control:
+    loop_var: domain
+
+- name: Generate default site configuration without SSL
+  template:
+    src: templates/nginx/http.j2
+    dest: /etc/nginx/sites-available/{{ application.main_domain }}_http.conf
+    mode: 0644
+#
+#
+#- name: Create Nginx virtual host configuration files without SSL
+#  template:
+#    src: ../templates/nginx_site_without_ssl.j2
+#    dest: /etc/nginx/sites-available/{{ nginx_site.server_names[0] }}
+#    mode: 0644
+#
+#- name: Enable Nginx virtual hosts
+#  file:
+#    src: "/etc/nginx/sites-available/{{ nginx_site.server_names[0] }}"
+#    dest: "/etc/nginx/sites-enabled/{{ nginx_site.server_names[0] }}"
+#    state: link
+#
+#- name: Check if certificate file exists
+#  stat:
+#    path: /etc/letsencrypt/live/{{ nginx_site.server_names[0] }}/fullchain.pem
+#  register: cert_fullchain
+#
+#- name: Check if certificate file exists
+#  stat:
+#    path: /etc/letsencrypt/live/{{ nginx_site.server_names[0] }}/fullchain.pem
+#  register: cert_key
+#
+#- name: Obtain SSL certificates with Certbot
+#  command: >
+#    certbot --nginx -n --agree-tos --email {{ nginx_site.admin_email }}
+#    {% for server_name in nginx_site.server_names %}
+#    -d {{ server_name }}
+#    {% endfor %}
+#    --redirect
+#  when: not cert_fullchain.stat.exists or not cert_key.stat.exists
+#  register: certbot_result
+#  changed_when: certbot_result.stdout.find('Congratulations! Your certificate and chain have been saved at') != -1
+#
+#- name: Create Nginx virtual host configuration files with SSL
+#  template:
+#    src: templates/nginx_site.j2
+#    dest: /etc/nginx/sites-available/{{ nginx_site.server_names[0] }}
+#    mode: 0644

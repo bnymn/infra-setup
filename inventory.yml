@@ -3,9 +3,13 @@ lb:
     5.75.210.124:
       ansible_user: izzet
       ansible_port: 63254
-      domains:
-        - bunyamininan.com
-        - www.bunyamininan.com
+      applications:
+        - main_domain: bunyamininan.com
+          other_domains:
+            - www.bunyamininan.com
+        - main_domain: hostnicnet.com
+          other_domains:
+            - www.hostnicnet.com
       application_servers:
         - 10.0.0.3
 
