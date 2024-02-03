@@ -15,6 +15,9 @@ jobs:
           mkdir -p ~/.ssh/
           echo "$SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          cd ~/.ssh/
+          pwd
+          ls -lah
           ssh-keyscan -t rsa,dsa,ecdsa,ed25519 -p $SSH_PORT $SSH_HOST >> ~/.ssh/known_hosts
         env:
           SSH_KEY: ${{ secrets.VM_SSH_PRIVATE_KEY }}
