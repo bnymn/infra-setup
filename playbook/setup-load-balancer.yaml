@@ -32,7 +32,7 @@
 
     - name: Create webroot directories
       file:
-        path: /var/www/html/{{ domain }}
+        path: /var/www/html/{{ domain }}/.well-known/acme-challenge
         state: directory
         mode: '0755'
       loop: "{{ domains }}"
