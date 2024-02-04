@@ -1,6 +1,7 @@
 lb:
   hosts:
-    5.75.210.124:
+    lb-web:
+      ansible_host: 5.75.210.124
       ansible_user: izzet
       ansible_port: 63254
       applications:
@@ -15,9 +16,11 @@ lb:
 
 news:
   hosts:
-    10.0.0.3:
+    app-server-1:
+      ansible_host: 10.0.0.3
       ansible_user: izzet
       ansible_port: 63254
+      ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q -p 63254 izzet@5.75.210.124"'
 
 database:
   hosts:

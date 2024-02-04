@@ -1,11 +1,12 @@
 ---
-- name: Get domain name from sources.list file
-  shell: "grep '^deb.*-backports' /etc/apt/sources.list"
-  changed_when: false
-  register: repository
+- name: Check for backports repository
+  ansible.builtin.shell: grep -E '^deb.*backports' /etc/apt/sources.list
+  register: backports_repository
+  ignore_errors: yes
 
-- name: Remove backports repository
+- name: Remove backports repository if it exists
   apt_repository:
-    repo: "{{ repository.stdout }}"
+    repo: "{{ item }}"
     state: absent
-    filename: backports
+  with_items: "{{ backports_repository.stdout_lines }}"
+  when: backports_repository.rc == 0
