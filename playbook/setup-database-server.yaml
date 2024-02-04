@@ -9,3 +9,4 @@
   tasks:
     - include_tasks: chapter/remove-backport-repository.yaml
     - include_tasks: chapter/install-docker.yaml
+    - include_tasks: chapter/install-postgresql.yaml
