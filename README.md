@@ -1,7 +1,7 @@
 # 1. Load balancer
 
-| User  | Public IP   | Public Key                                                                                     |
-|-------|-------------|------------------------------------------------------------------------------------------------|
+| User  | Public IP   | Public Key                                                                                      |
+|-------|-------------|-------------------------------------------------------------------------------------------------|
 | izzet | 49.13.55.66 | `ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBTxjdxPjwE7cUjdnaQJhTLYTYSpAlMsEXtelpy04Qxg izzet@lb-web` |
 
 ## 1.1. Cloud configuration
@@ -33,6 +33,11 @@ runcmd:
   - reboot
 ```
 
+## 1.2. How to connect via SSH?
+```shell
+ssh izzet@5.75.210.124 -p63254
+```
+
 # 2. Application server
 Application servers are not publicly accessible.
 
@@ -62,6 +67,12 @@ runcmd:
   - sed -i -e '/^\(#\|\)AuthorizedKeysFile/s/^.*$/AuthorizedKeysFile .ssh\/authorized_keys/' /etc/ssh/sshd_config
   - sed -i '$a AllowUsers izzet' /etc/ssh/sshd_config
   - reboot
+```
+
+## 2.2. How to connect via SSH?
+```shell
+# app-1
+ssh -p 63254 -o 'ProxyCommand=ssh -W %h:%p -q -p 63254 izzet@5.75.210.124' izzet@10.0.0.3
 ```
 
 # 3. Database server
@@ -96,6 +107,12 @@ runcmd:
   - sed -i -e '/^\(#\|\)AuthorizedKeysFile/s/^.*$/AuthorizedKeysFile .ssh\/authorized_keys/' /etc/ssh/sshd_config
   - sed -i '$a AllowUsers izzet' /etc/ssh/sshd_config
   - reboot
+```
+
+## 3.2. How to connect via SSH?
+```shell
+# db-1
+ssh -p 63254 -o 'ProxyCommand=ssh -W %h:%p -q -p 63254 izzet@5.75.210.124' izzet@10.0.0.4
 ```
 
 # Prerequisite
