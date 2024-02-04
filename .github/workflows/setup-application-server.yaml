@@ -1,4 +1,4 @@
-name: Setup Application
+name: Setup Application Server
 
 on:
   workflow_dispatch:
@@ -17,7 +17,7 @@ jobs:
           cd ~/.ssh/
           pwd
           ls -lah
-          ssh-keyscan -t rsa,dsa,ecdsa,ed25519 -p $SSH_PORT $SSH_HOST >> ~/.ssh/known_hosts
+          ssh-keyscan -p $SSH_PORT -H $SSH_HOST >> ~/.ssh/known_hosts
         env:
           SSH_KEY: ${{ secrets.VM_SSH_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.NEWS_LB_HOST }}
@@ -26,4 +26,6 @@ jobs:
       - name: Run ansible
         run: |
           service ssh status
-          ansible-playbook -i inventory.yml --private-key ~/.ssh/id_rsa playbook/setup-application-server.yaml
+          ansible-playbook -vvv -i inventory.yml --private-key ~/.ssh/id_rsa playbook/setup-application-server.yaml
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: false

@@ -7,7 +7,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Setup
-    if: github.ref == 'refs/heads/main'
     steps:
       - name: Configuring ssh
         run: |
