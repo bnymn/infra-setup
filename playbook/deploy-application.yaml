@@ -1,6 +1,7 @@
 ---
 - name: Deploy Application
   hosts: news
+  become: true
   vars:
     docker_registry: ghcr.io
     docker_username: bnymn
