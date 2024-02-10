@@ -1,0 +1,43 @@
+---
+- name: Deploy Application
+  hosts: news
+  vars:
+    docker_registry: ghcr.io
+    docker_username: bnymn
+    docker_password: "{{ docker_registry_password }}"
+    docker_image: bnymn/news
+    docker_tag: "{{ docker_tag }}"
+    container_name: app
+    container_port: 9000
+  tasks:
+    - name: Log in to Docker registry
+      community.docker.docker_login:
+        username: "{{ docker_username }}"
+        password: "{{ docker_password }}"
+        registry_url: "{{ docker_registry }}"
+
+    - name: Pull Docker image
+      community.docker.docker_image:
+        name: "{{ docker_registry }}/{{ docker_image }}:{{ docker_tag }}"
+        source: pull
+
+    - name: Remove existing container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        state: absent
+      ignore_errors: yes
+
+    - name: Run new Docker container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: "{{ docker_registry }}/{{ docker_image }}:{{ docker_tag }}"
+        ports:
+          - "{{ container_port }}:{{ container_port }}"
+        restart_policy: always
+        state: started
+        detach: yes
+
+    - name: Remove Docker login credentials
+      ansible.builtin.file:
+        path: "~/.docker/config.json"
+        state: absent
