@@ -11,6 +11,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Setup
+    permissions: read-all
     steps:
       - name: Configuring ssh
         run: |
@@ -30,7 +31,8 @@ jobs:
       - name: Run ansible
         run: |
           service ssh status
-          ansible-playbook -vvv -i inventory.yml --private-key ~/.ssh/id_rsa playbook/deploy-application.yaml -e "docker_password=$GITHUB_TOKEN" -e "docker_tag=$DOCKER_TAG"
+          ansible-playbook -vvv -i inventory.yml --private-key ~/.ssh/id_rsa playbook/deploy-application.yaml -e "docker_password=$ACCESS_TOKEN" -e "docker_tag=$DOCKER_TAG"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKER_TAG: ${{ github.event.inputs.message }}
+          ANSIBLE_HOST_KEY_CHECKING: false
+          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_TAG: ${{ github.event.inputs.tag }}

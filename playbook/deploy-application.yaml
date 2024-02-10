@@ -19,7 +19,8 @@
 
     - name: Pull Docker image
       community.docker.docker_image:
-        name: "{{ docker_registry }}/{{ docker_image }}:{{ docker_tag }}"
+        name: "{{ docker_registry }}/{{ docker_image }}"
+        tag: "{{ docker_tag }}"
         source: pull
 
     - name: Remove existing container
