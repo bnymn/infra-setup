@@ -15,23 +15,22 @@ server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
     server_name {{ application.main_domain }};
+    index index.php;
+    charset utf-8;
+    error_page 404 /index.php;
+
+    # Set the Document Root: Even though you're not serving static files with Nginx,
+    # setting the root directive to the public directory of your Laravel application
+    # is a good practice. This setting is used by Nginx to resolve paths correctly
+    # for internal processing, including constructing the SCRIPT_FILENAME parameter correctly.
+    root /var/www/html/public;
 
     location / {
-        # First try and load files from the public folder, if they don't exist
-        # then send the request through to laravel
-        try_files $uri $uri/ /index.php;
-
-        # Forward requests on to PHP-FPM
-        location = /index.php {
-            include /etc/nginx/fastcgi_params;
-            fastcgi_index index.php;
-            fastcgi_intercept_errors on;
-            fastcgi_split_path_info ^(.+\.php)(/.+)$;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            fastcgi_pass app;
-        }
+        fastcgi_pass app;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
     }
-
     ssl_certificate /etc/letsencrypt/live/{{ application.main_domain }}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/{{ application.main_domain }}/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
