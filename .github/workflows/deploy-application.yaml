@@ -33,19 +33,12 @@ jobs:
           service ssh status
           ansible-playbook -vvv -i inventory.yml \
           --private-key ~/.ssh/id_rsa playbook/deploy-application.yaml \
-          -e "docker_password=$ACCESS_TOKEN" \
-          -e "docker_tag=$DOCKER_TAG" \
-          -e "APP_KEY=${{ secrets.APP_KEY }}" \
-          -e "DB_CONNECTION=${{ vars.DB_CONNECTION }}" \
+          -e "DOCKER_PASSWORD=${{ secrets.GITHUB_TOKEN }}" \
+          -e "DOCKER_TAG=${{ github.event.inputs.tag }}" \
           -e "DB_DATABASE=${{ vars.DB_DATABASE }}" \
           -e "DB_HOST=${{ vars.DB_HOST }}" \
           -e "DB_PORT=${{ vars.DB_PORT }}" \
           -e "DB_USERNAME=${{ vars.DB_USERNAME }}" \
-          -e "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" \
-          -e "LOG_CHANNEL=${{ vars.LOG_CHANNEL }}" \
-          -e "APP_ENV=${{ vars.APP_ENV }}" \
-          -e "APP_DEBUG=${{ vars.APP_DEBUG }}"
+          -e "DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
         env:
           ANSIBLE_HOST_KEY_CHECKING: false
-          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKER_TAG: ${{ github.event.inputs.tag }}
