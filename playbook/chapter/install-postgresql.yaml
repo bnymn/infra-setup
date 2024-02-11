@@ -13,9 +13,9 @@
     name: postgres
     image: postgres:16.1-alpine3.19
     env:
-      POSTGRES_DB: "app"
-      POSTGRES_USER: "app"
-      POSTGRES_PASSWORD: "{{ postgres_password }}"
+      POSTGRES_DB: "{{ DB_DATABASE }}"
+      POSTGRES_USER: "{{ DB_USERNAME }}"
+      POSTGRES_PASSWORD: "{{ DB_PASSWORD }}"
     volumes:
       - "/var/lib/postgresql/data:/var/lib/postgresql/data"
     networks:

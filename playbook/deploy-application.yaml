@@ -38,6 +38,17 @@
         restart_policy: always
         state: started
         detach: yes
+        env:
+          APP_KEY: "{{ APP_KEY }}"
+          DB_CONNECTION: "{{ DB_CONNECTION }}"
+          DB_DATABASE: "{{ DB_DATABASE }}"
+          DB_HOST: "{{ DB_HOST }}"
+          DB_PORT: "{{ DB_PORT }}"
+          DB_USERNAME: "{{ DB_USERNAME }}"
+          DB_PASSWORD: "{{ DB_PASSWORD }}"
+          LOG_CHANNEL: "{{ LOG_CHANNEL }}"
+          APP_ENV: "{{ APP_ENV }}"
+          APP_DEBUG: "{{ APP_DEBUG }}"
 
     - name: Remove Docker login credentials
       ansible.builtin.file:
