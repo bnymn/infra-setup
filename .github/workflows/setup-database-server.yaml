@@ -26,7 +26,12 @@ jobs:
       - name: Run ansible
         run: |
           service ssh status
-          ansible-playbook -vvv -i inventory.yml --private-key ~/.ssh/id_rsa playbook/setup-database-server.yaml -e "postgres_password=$DB_PASSWORD"
+          ansible-playbook -vvv \
+          -i inventory.yml \
+          --private-key ~/.ssh/id_rsa \
+          playbook/setup-database-server.yaml \
+          -e "DB_DATABASE=${{ vars.DB_DATABASE }}" \
+          -e "DB_USERNAME=${{ vars.DB_USERNAME }}" \
+          -e "DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
         env:
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           ANSIBLE_HOST_KEY_CHECKING: false
