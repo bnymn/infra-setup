@@ -1,26 +1,24 @@
 ---
 - name: Deploy Application
-  hosts: news
+  hosts: cms
   become: true
   vars:
     docker_registry: ghcr.io
     docker_username: bnymn
-    docker_password: "{{ docker_registry_password }}"
-    docker_image: bnymn/news
-    docker_tag: "{{ docker_tag }}"
+    docker_image: bnymn/cms
     container_name: app
-    container_port: 9000
+    container_port: 8080
   tasks:
     - name: Log in to Docker registry
       community.docker.docker_login:
         username: "{{ docker_username }}"
-        password: "{{ docker_password }}"
+        password: "{{ DOCKER_PASSWORD }}"
         registry_url: "{{ docker_registry }}"
 
     - name: Pull Docker image
       community.docker.docker_image:
         name: "{{ docker_registry }}/{{ docker_image }}"
-        tag: "{{ docker_tag }}"
+        tag: "{{ DOCKER_TAG }}"
         source: pull
 
     - name: Remove existing container
@@ -39,16 +37,11 @@
         state: started
         detach: yes
         env:
-          APP_KEY: "{{ APP_KEY }}"
-          DB_CONNECTION: "{{ DB_CONNECTION }}"
           DB_DATABASE: "{{ DB_DATABASE }}"
           DB_HOST: "{{ DB_HOST }}"
           DB_PORT: "{{ DB_PORT }}"
           DB_USERNAME: "{{ DB_USERNAME }}"
           DB_PASSWORD: "{{ DB_PASSWORD }}"
-          LOG_CHANNEL: "{{ LOG_CHANNEL }}"
-          APP_ENV: "{{ APP_ENV }}"
-          APP_DEBUG: "{{ APP_DEBUG }}"
 
     - name: Remove Docker login credentials
       ansible.builtin.file:
