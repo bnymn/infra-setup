@@ -30,7 +30,7 @@
     - name: Run new Docker container
       community.docker.docker_container:
         name: "{{ container_name }}"
-        image: "{{ docker_registry }}/{{ docker_image }}:{{ docker_tag }}"
+        image: "{{ docker_registry }}/{{ docker_image }}:{{ DOCKER_TAG }}"
         ports:
           - "{{ container_port }}:{{ container_port }}"
         restart_policy: always
