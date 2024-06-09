@@ -1,0 +1,13 @@
+---
+- name: Install gh on Ubuntu
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install gh
+      apt:
+        name:
+          - gh
+
+    - name: Install latest passlib with pip
+      pip: name=passlib

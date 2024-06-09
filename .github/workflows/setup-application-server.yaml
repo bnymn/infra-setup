@@ -1,0 +1,31 @@
+name: Setup Application Server
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Setup
+    steps:
+      - name: Configuring ssh
+        run: |
+          eval `ssh-agent -s`
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          cd ~/.ssh/
+          pwd
+          ls -lah
+          ssh-keyscan -p $SSH_PORT -H $SSH_HOST >> ~/.ssh/known_hosts
+        env:
+          SSH_KEY: ${{ secrets.VM_SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.NEWS_LB_HOST }}
+          SSH_PORT: ${{ secrets.VM_SSH_PORT }}
+      - uses: actions/checkout@v4
+      - name: Run ansible
+        run: |
+          service ssh status
+          ansible-playbook -vvv -i inventory.yml --private-key ~/.ssh/id_rsa playbook/setup-application-server.yaml
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: false

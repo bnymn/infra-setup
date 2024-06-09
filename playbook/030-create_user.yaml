@@ -1,0 +1,47 @@
+---
+- name: Create an app user and add to Docker group
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Create group
+      group:
+        name: "{{ username }}"
+        state: present
+
+    - name: Create user
+      user:
+        name: "{{ username }}"
+        group: "{{ username }}"
+        groups: docker
+        shell: /bin/bash
+        state: present
+        append: true
+
+    - name: Generate a random password
+      ansible.builtin.set_fact:
+        password: "09162bfe90b27d8a243760a9a848d99329f5c61d31eea466ac9ff7e31c93eb29"
+
+    - name: Change user password
+      ansible.builtin.user:
+        name: "{{ username }}"
+        password: "{{ password }}"
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+
+    - name: Add authorized keys
+      authorized_key:
+        user: "{{ username }}"
+        key: "{{ item }}"
+      loop: "{{ authorized_keys }}"
+
+    - name: Check if SSH key already exists
+      stat:
+        path: /home/{{ username }}/.ssh/id_rsa
+      register: ssh_key_stat
+
+    - name: Generate SSH key
+      openssh_keypair:
+        path: /home/{{ username }}/.ssh/id_rsa
+        size: 8192
+      when: not ssh_key_stat.stat.exists

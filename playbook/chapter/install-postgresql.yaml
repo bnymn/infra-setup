@@ -1,0 +1,26 @@
+- name: Pull the PostgreSQL Docker image
+  community.docker.docker_image:
+    name: "postgres:16.1-alpine3.19"
+    source: pull
+
+- name: Create a Docker network
+  community.docker.docker_network:
+    name: db_network
+    state: present
+
+- name: Run PostgreSQL container
+  community.docker.docker_container:
+    name: postgres
+    image: postgres:16.1-alpine3.19
+    env:
+      POSTGRES_DB: "{{ DB_DATABASE }}"
+      POSTGRES_USER: "{{ DB_USERNAME }}"
+      POSTGRES_PASSWORD: "{{ DB_PASSWORD }}"
+    volumes:
+      - "/var/lib/postgresql/data:/var/lib/postgresql/data"
+    networks:
+      - name: db_network
+    ports:
+      - "5432:5432"
+    restart_policy: always
+    state: started

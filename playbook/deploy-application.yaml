@@ -1,0 +1,47 @@
+---
+- name: Deploy Application
+  hosts: app
+  become: true
+  vars:
+    docker_registry: ghcr.io
+    docker_username: bnymn
+    docker_image: bnymn/cms
+    container_name: app
+    container_port: 8080
+  tasks:
+    - name: Log in to Docker registry
+      community.docker.docker_login:
+        username: "{{ docker_username }}"
+        password: "{{ DOCKER_PASSWORD }}"
+        registry_url: "{{ docker_registry }}"
+
+    - name: Pull Docker image
+      community.docker.docker_image:
+        name: "{{ docker_registry }}/{{ docker_image }}"
+        tag: "{{ DOCKER_TAG }}"
+        source: pull
+
+    - name: Remove existing container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        state: absent
+      ignore_errors: yes
+
+    - name: Run new Docker container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: "{{ docker_registry }}/{{ docker_image }}:{{ DOCKER_TAG }}"
+        ports:
+          - "{{ container_port }}:{{ container_port }}"
+        restart_policy: always
+        state: started
+        detach: yes
+        env:
+          SPRING_DATASOURCE_URL: "{{ SPRING_DATASOURCE_URL }}"
+          SPRING_DATASOURCE_USERNAME: "{{ SPRING_DATASOURCE_USERNAME }}"
+          SPRING_DATASOURCE_PASSWORD: "{{ SPRING_DATASOURCE_PASSWORD }}"
+
+    - name: Remove Docker login credentials
+      ansible.builtin.file:
+        path: "~/.docker/config.json"
+        state: absent

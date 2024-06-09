@@ -1,0 +1,24 @@
+{% for domain in application.other_domains %}
+    server {
+        listen 80;
+        listen [::]:80;
+        server_name {{ domain }};
+        location /.well-known/acme-challenge {
+            root /var/www/html/{{ domain }};
+        }
+        location / {
+            return 301 https://{{ application.main_domain }}$request_uri;
+        }
+    }
+{% endfor %}
+server {
+    listen 80;
+    listen [::]:80;
+    server_name {{ application.main_domain }};
+    location /.well-known/acme-challenge {
+        root /var/www/html/{{ application.main_domain }};
+    }
+    location / {
+        return 301 https://{{ application.main_domain }}$request_uri;
+    }
+}

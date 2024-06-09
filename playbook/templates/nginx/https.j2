@@ -1,0 +1,29 @@
+{% for domain in application.other_domains %}
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name {{ domain }};
+    return 301 https://{{ application.main_domain }}$request_uri;
+
+    ssl_certificate /etc/letsencrypt/live/{{ application.main_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ application.main_domain }}/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+}
+{% endfor %}
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name {{ application.main_domain }};
+    location / {
+        proxy_pass http://app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    ssl_certificate /etc/letsencrypt/live/{{ application.main_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ application.main_domain }}/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+}

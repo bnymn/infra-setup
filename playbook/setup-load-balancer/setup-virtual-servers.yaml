@@ -1,0 +1,52 @@
+- name: Create the webroot of the main domain
+  file:
+    path: /var/www/html/{{ application.main_domain }}/.well-known/acme-challenge
+    state: directory
+    mode: '0755'
+
+- name: Create the webroot of other domains
+  file:
+    path: /var/www/html/{{ domain }}/.well-known/acme-challenge
+    state: directory
+    mode: '0755'
+  loop: "{{ application.other_domains }}"
+  loop_control:
+    loop_var: domain
+
+- name: Generate http server configurations
+  template:
+    src: templates/nginx/http.j2
+    dest: /etc/nginx/sites-enabled/{{ application.main_domain }}_http.conf
+    mode: 0644
+
+- name: Check if certificate file exists
+  stat:
+    path: /etc/letsencrypt/live/{{ application.main_domain }}/fullchain.pem
+  register: cert_fullchain
+
+- name: Check if certificate file exists
+  stat:
+    path: /etc/letsencrypt/live/{{ application.main_domain }}/fullchain.pem
+  register: cert_key
+
+- name: Obtain SSL certificates with Certbot
+  command: >
+    certbot certonly -n --agree-tos --email {{ nginx_site.admin_email }} --webroot -w /var/www/html/{{ application.main_domain }} -d {{ application.main_domain }}
+    {% for domain in application.other_domains %}
+    -w /var/www/html/{{ domain }} -d {{ domain }}
+    {% endfor %}
+  when: not cert_fullchain.stat.exists or not cert_key.stat.exists
+  register: certbot_result
+  changed_when: certbot_result.stdout.find('Successfully received certificate.') != -1
+
+- name: Generate the upstream configuration
+  template:
+    src: templates/nginx/upstream.j2
+    dest: /etc/nginx/sites-enabled/upstream.conf
+    mode: 0644
+
+- name: Generate https server configurations
+  template:
+    src: templates/nginx/https.j2
+    dest: /etc/nginx/sites-enabled/{{ application.main_domain }}_https.conf
+    mode: 0644

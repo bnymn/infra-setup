@@ -1,0 +1,52 @@
+---
+- name: Setup load balancer
+  hosts: lb
+  become: true
+
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Enable Nginx service
+      systemd:
+        name: nginx
+        enabled: true
+
+    - name: Install Certbot
+      apt:
+        name:
+          - certbot
+          - python3-certbot-nginx
+        state: present
+
+    - name: Schedule automatic renewal of SSL certificates with Certbot
+      cron:
+        name: "Renew Certbot SSL certificates"
+        minute: "0"
+        hour: "12"
+        job: "certbot renew --quiet"
+        user: root
+        state: present
+
+    - name: Remove default server configuration
+      file:
+        path: /etc/nginx/sites-available/default
+        state: absent
+
+    - name: Remove default server configuration
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Setup virtual servers
+      include_tasks: setup-load-balancer/setup-virtual-servers.yaml
+      loop: "{{ applications }}"
+      loop_control:
+        loop_var: application
+
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: reloaded
