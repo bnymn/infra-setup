@@ -7,6 +7,7 @@ You need to first install Ansible on your local machine in order to execute ansi
 <div style="text-align: center;">
   <img src="assets/application-server-plan.jpg" alt="Application server plan">
 </div>
+Diagram link: https://miro.com/app/board/uXjVK9rVdAM=/
 
 We have a single server setup. This server uses Nginx and Docker. Each application runs as a container within Docker. Additionally, all application dependencies, such as PostgreSQL, Elasticsearch, and Redis, are also run as containers inside Docker.
 
